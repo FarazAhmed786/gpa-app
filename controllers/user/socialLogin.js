@@ -42,7 +42,7 @@ app.post('/', (req, res) => {
         else if (response == 700) {
             var errors = {
                 success: false,
-                msg: 'phone number not required',
+                msg: 'phone number required',
                 errorcode: 700
             };
             res.send(errors);
