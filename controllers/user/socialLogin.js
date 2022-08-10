@@ -42,7 +42,7 @@ app.post('/', (req, res) => {
         else if (response == 700) {
             var errors = {
                 success: false,
-                msg: 'mobile not exist',
+                msg: 'phone number not required',
                 errorcode: 700
             };
             res.send(errors);
@@ -75,7 +75,8 @@ function validateUserData(userData) {
         idToken: Joi.string(),
         authCode: Joi.string(),
         Accounttype: Joi.number().required(),
-        mobile: Joi.number()
+        mobile: Joi.number(),
+        termsAgreed: Joi.boolean()
     });
     return Joi.validate(userData, schema);
 }
@@ -89,7 +90,7 @@ async function checkUser(body) {
         if(!body.mobile){
             return (700);
         }
-        var data = { mobile: body.mobile, email: body.email, Accounttype: body.Accounttype, gcm_id: body.gcm_id, profile_img: body.profile_img, platform: body.platform, firstName: body.firstName, lastName: body.lastName }
+        var data = { termsAgreed: body.termsAgreed, mobile: body.mobile, email: body.email, Accounttype: body.Accounttype, gcm_id: body.gcm_id, profile_img: body.profile_img, platform: body.platform, firstName: body.firstName, lastName: body.lastName }
         const userForSve = new UserData(data);
         console.log("idhar",userForSve);
         try {
