@@ -37,31 +37,31 @@ app.post('/', function (req, res, next) {
                     //   return res.redirect('/forgot');
                 }
                 else if (user) {
-
-                    // res.status(200).send("found");
-                    var smtpTransport = nodemailer.createTransport({
-                        service: 'gmail',
+                    const transporter = nodemailer.createTransport({
+                        port: 465,
+                        host: "smtp.gmail.com",
                         auth: {
-                            user: 'abdulahadnara1996@gmail.com',
-                            pass: 'qadirbhai12'
-                        }
-                    });
-                    var mailOptions = {
+                          user: 'masologyshopify@gmail.com',
+                          pass: 'ikdgmqipwymgejyc',
+                        },
+                        // secure: true,
+                      })
+                      const mailData = {
                         to: req.body.email,
-                        from: 'info@Convey.com',
+                        from: 'masologyshopify@gmail.com',
                         subject: 'Convey Password Reset',
                         text: 'Your code for reset password is ==> ' + token,
                         html: '<strong>'+token + '</strong>',
-                    };
-
-                    sgMail.send(mailOptions,
-                         function (err) {
-
-                        if (err) {
-                            console.log(err)
-                            res.status(403).send(err);
+                       }
+            
+                       transporter.sendMail(mailData, function (err, info) {
+                        if(err){
+                          console.log("error",err)
+                          res.status(403).send(err);
                         }
-                        else {
+                          else{
+                          console.log("info",info)
+                          console.log("emaildone")
                             createToken({
                                 _userId: user._id,
                                 token: token,
@@ -74,11 +74,50 @@ app.post('/', function (req, res, next) {
                                     res.send({ success: true, msg:"check your email "+ req.body.email, userId: user._id });
                                 }
                             }));
-                        }
+                          }
+                      })
+                    // res.status(200).send("found");
+                    // var smtpTransport = nodemailer.createTransport({
+                    //     service: 'gmail',
+                    //     auth: {
+                    //         user: 'masologyshopify@gmail.com',
+                    //         pass: 'ikdgmqipwymgejyc'
+                    //     }
+                    // });
+                    // var mailOptions = {
+                    //     to: req.body.email,
+                    //     from: 'masologyshopify@gmail.com',
+                    //     subject: 'Convey Password Reset',
+                    //     text: 'Your code for reset password is ==> ' + token,
+                    //     html: '<strong>'+token + '</strong>',
+                    // };
+
+                    // sgMail.send(mailOptions,
+                    //      function (err) {
+
+                    //     if (err) {
+                    //         console.log(err)
+                    //         res.status(403).send(err);
+                    //     }
+                    //     else {
+                    //         console.log("emaildone")
+                    //         createToken({
+                    //             _userId: user._id,
+                    //             token: token,
+                    //             createdAt: Date.now()
+                    //         }).then((response => {
+                    //             if (response === 500) {
+                    //                 res.status(403).send("error");
+                    //             }
+                    //             else if (response === 200) {
+                    //                 res.send({ success: true, msg:"check your email "+ req.body.email, userId: user._id });
+                    //             }
+                    //         }));
+                    //     }
 
 
 
-                    });
+                    // });
                 }
 
 
